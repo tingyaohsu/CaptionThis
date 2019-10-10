@@ -1,0 +1,78 @@
+body, html {
+  margin: 0;
+  overflow: hidden;
+  height:98%;
+}
+#cap{
+    font-size:64px;
+}
+#cap_im{
+    font-size:54px;
+}
+#left {
+  height:100%;
+  position: absolute;
+  top: 2%;
+  bottom: 0;
+  left: 0;
+}
+
+#partial {
+  height:100%;
+  position: absolute;
+  top: 2%;
+  bottom: 0;
+  right: 0;
+  overflow-y: scroll;
+  width:50%;
+}
+#new_cap {
+  height:100%;
+  position: absolute;
+  top: 2%;
+  bottom: 0;
+  right: 0;
+  overflow-y: scroll;
+}
+div.clickEffect{
+    position:fixed;
+    box-sizing:border-box;
+    border-style:solid;
+    border-color:white;
+    border-radius:50%;
+    /*-webkit-animation:clickEffect 50s ease-out;*/
+    animation:clickEffect 1s ease-out;
+    z-index:99999;
+}
+@-webkit-keyframes clickEffect{
+  0%{
+    opacity:1;
+    width:0.5em; height:0.5em;
+    margin:-0.25em;
+    border-width:0.5em;
+  }
+  100%{
+    opacity:0.2;
+    width:15em; height:15em;
+    margin:-7.5em;
+    border-width:0.03em;
+  }
+}
+@keyframes clickEffect{
+	0%{
+		opacity:1;
+		width:0.5em; height:0.5em;
+		margin:-0.25em;
+		border-width:0.5rem;
+	}
+	100%{
+		opacity:0.2;
+		width:15em; height:15em;
+		margin:-7.5em;
+		border-width:0.03rem;
+	}
+}
+
+#myCanvas {
+    position:relative;
+}

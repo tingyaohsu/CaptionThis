@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script
+    src="http://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous">
+</script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="static/js/Long_Click.js"></script>
+<script src="static/js/sprintf.js"></script>
+<link rel="stylesheet" href="static/css/styles.css" type="text/css">
+<!--link rel="stylesheet" href="static/css/component.css" type="text/css">
+<link rel="stylesheet" href="static/css/normalize.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="static/fonts/font-awesome-4.3.0/css/font-awesome.min.css" /-->
+</head>
+    <body>
+        <a id="test" class="container">
+            <!-- Extra large modal -->
+            <!--button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">User Select</button>
+    		<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                    
+                        <div class="modal-header">
+    		                Customer
+                        </div>
+                        <div id="card_container" class="modal-body">
+                        </div>
+    		        </div>
+    		    </div>
+    		</div-->
+            <div id="content">
+			    <div class="row">
+			    	<div class="col-8" id="left">
+                    	<img id="myimg" class="img-fluid" style="width: 100%" src="{{contents['filename']}}" alt="photos">
+                        <canvas id='myCanvas'></canvas>
+                    </div>
+			    	<div class="col-4" id="partial">
+		                <div class="card mb-3" style="max-width:100%;">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <img src="{{contents['filename']}}" class="card-img" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h1 class="card-text" id="cap_im">{{contents['caption']}}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                	</div>
+			    </div>
+            </div>
+        </a>
+    </body>
+</html>

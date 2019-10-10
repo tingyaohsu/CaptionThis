@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Choose Your Option</title>
+    </head>
+    <body>
+        <header class="navbar">
+            <h1>Image Uploaded!!</h1>
+            <form action="/single_click" method="post" enctype="multipart/form-data" >
+                <div style="display: none;">
+                    <input type="hidden" name="click_img" value="static/{{products['filename']}}">
+                    <input type="hidden" name="img_caption" value="static/{{products['caption']}}">
+                </div>
+                <input type="submit" value="Single Click" style="height: 10.5em; width: 25em">
+            </form>
+            <br/><br/>
+            <form action="/long_click" method="post" enctype="multipart/form-data" >
+                <div style="display: none;">
+                    <input type="text" name="click_img" value="static/{{products['filename']}}">
+                    <input type="text" name="img_caption" value="static/{{products['caption']}}">
+                </div>
+                <input type="submit" value="Long Click" style="height: 10.5em; width: 25em">
+            </form>
+            <br/><br/>
+            <form action="/box_click" method="post" enctype="multipart/form-data" >
+                <div style="display: none;">
+                    <input type="text" name="click_img" value="static/{{products['filename']}}">
+                    <input type="text" name="img_caption" value="static/{{products['caption']}}">
+                </div>
+                <input type="submit" value="Box" style="height: 10.5em; width: 25em">
+            </form>
+            <br/><br/>
+            <form action="/draw_click" method="post" enctype="multipart/form-data" >
+                <div style="display: none;">
+                    <input type="text" name="click_img" value="static/{{products['filename']}}">
+                    <input type="text" name="img_caption" value="static/{{products['caption']}}">
+                </div>
+                <input type="submit" value="Draw" style="height: 10.5em; width: 25em">
+            </form>
+        </header> 
+    </body>
+</html>
+
