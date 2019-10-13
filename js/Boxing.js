@@ -1,201 +1,219 @@
 
 var canvas; 
 var ctx ;
+var newRect ;
 var rect = {};
 var drag = false;
 var imageObj = null;
 var flag = 0;
+var rects = [];
+var isRecDown=false;
+var timeOver = false;
+var unlocked_rect = [];
+
+var move;
+var up;
+var down;
+var out;
+
+function reOffset(){ 
+
+    var left = $("#myimg").offset().left;
+    var top = $("#myimg").offset().top;
+    $("#myCanvas").css("top", top).css("left", left);
+
+    var BoundingBox=canvas.getBoundingClientRect();
+    offsetX=BoundingBox.left;
+    offsetY=BoundingBox.top;        
+
+}
+
+window.onscroll=function(e){ reOffset(); }
+window.onresize=function(e){ reOffset(); }
 
 $(function() {
-console.log("Hello World");
-	
-    function init() {
-        var width = $("#myimg").css("width");
-        var height = $("#myimg").css("height");
-        var left = $("#myimg").offset().left;
-        var top = $("#myimg").offset().top;
-        canvas = document.getElementById('myCanvas');
-        ctx = canvas.getContext('2d');
 
-        canvas.width = parseInt(width.replace("px", ""));
-        canvas.height = parseInt(height.replace("px", ""));
-        $("#myCanvas").css("top","-"+height);
-	    
-        canvas.addEventListener('mousedown', mouseDown, false);
-	    canvas.addEventListener('mouseup', mouseUp, false);
-	    canvas.addEventListener('mousemove', mouseMove, false);
-        canvas.addEventListener('touchstart', touchStart, false);
-	    canvas.addEventListener('touchend', touchEnd, false);
-	    canvas.addEventListener('touchmove', touchMove, false);
-	}
-    
-    function touchStart(event) { 
-        flag = 0;
-        var left = $("#myimg").offset().left;
-        var top = $("#myimg").offset().top;
-        var pageX = event.touches[0].clientX;
-        var pageY = event.touches[0].clientY;
-        //console.log("fuck");
-	    rect.startX = pageX - left;
-	    rect.startY = pageY - top;
-	    drag = true;
-        //console.log(pageX)
-        //console.log(pageY)
-        console.log("OK")
-    }
-    function touchEnd(event) {
-        var left = $("#myimg").offset().left;
-        var top = $("#myimg").offset().top;
-        var pageX = event.changedTouches[0].clientX;
-        var pageY = event.changedTouches[0].clientY;
-        console.log("leave:",pageX,pageY)
-	    rect.w = (pageX - left) - rect.startX;
-	    rect.h = (pageY - top) - rect.startY;
-            //console.log(rect.w,rect.h)
-            var relativeX = (pageX - left);
-            var relativeY = (pageY - top);
-            var temp = $("#myimg")
-            var formdata = {"img_size":{"width":temp.css("width"),"height":temp.css("height")}
-                    ,"coordinates":{"x":relativeX,"y":relativeY},"img_name":temp.attr("src")
-                    ,"rectangles":{"x_left":rect.startX+"px","x_right":pageX-left+"px","y_top":rect.startY+"px","y_bottom":pageY-top+"px"}};
-                touch_mask(event);
-                $.ajax({
-                    type:'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formdata),
-                    dataType: 'json',
-                    url: 'http://35.227.183.188:5000/boxpost',
-                    success: function (e) {
-                        //console.log(e.coordinates)
-                        //console.log(e.caption);
-						if(e != 0){
-                            add_card(e);
-                		}else{
-                    		alert('file not uploaded');
-                		}
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    },
-	            });
-                drag = false; 
-    }
-    function touchMove(event) {
-        var pageX = event.changedTouches[0].clientX;
-        var pageY = event.changedTouches[0].clientY;
-	    if (drag) {
-            flag = 1;
-            var left = $("#myimg").offset().left;
-            var top = $("#myimg").offset().top;
-	        ctx.clearRect(0, 0, 5000, 5000);
-	        rect.w = (pageX - left) - rect.startX;
-	        rect.h = (pageY - top) - rect.startY;
+    setInterval(reOffset, 0.01);
+    // Submit Button
+    $('#submit_btn').delay(5000).show(0);
+    $("#reset").click(function(){
+        location.reload();
+        timeOver = false;
+    });  
+
+    console.log(timeOver);
+
+    var width = $("#myimg").css("width");
+    var height = $("#myimg").css("height");
+    var left = $("#myimg").offset().left;
+    var top = $("#myimg").offset().top;
+    canvas = document.getElementById('myCanvas');
+    ctx = canvas.getContext('2d');
+
+    canvas.width = parseInt(width.replace("px", ""));
+    canvas.height = parseInt(height.replace("px", ""));
+    // $("#myCanvas").css("top","-"+height);
+    $("#myCanvas").css("top", top).css("left", left);
+    // $("#myCanvas").attr("width", 775).attr("height", 581);
+
+    var drawRectangleOnCanvas = {
+
+        handleMouseDown:function(e){
+          // tell the browser we're handling this event
+            e.preventDefault();
+            e.stopPropagation();
+            
+            rect.startX = e.clientX-offsetX;
+            rect.startY = e.clientY-offsetY;
+
+            isRecDown=true;
+
+        },
+
+        handleMouseUp:function(e){
+          // tell the browser we're handling this event
+            e.preventDefault();
+            e.stopPropagation();
+
+            rect.w = (e.clientX - left) - rect.startX;
+            rect.h = (e.clientY - top) - rect.startY;
+
+            // Put your mouseup stuff here
+            isRecDown=false;
+            rects.push(newRect);
+            drawRectangleOnCanvas.drawAll();
+        },
+
+        drawAll:function(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.lineWidth = '3';
+
+            // if (timeOver == false){
+            for(var i=0;i<rects.length;i++){
+                var r=rects[i];
+                ctx.strokeStyle = 'red';
+                ctx.globalAlpha=1;
+                ctx.strokeRect(r.left,r.top,r.right-r.left,r.bottom-r.top);
+
+                ctx.globalAlpha=0.5;
+                ctx.fillStyle="white";
+                ctx.fillRect(r.left,r.top,r.right-r.left,r.bottom-r.top);
+            }
+            // }
+        },
+
+        handleMouseOut:function(e){
+          // tell the browser we're handling this event
+            e.preventDefault();
+            e.stopPropagation();
+
+            rect.overX = e.clientX - offsetX;
+            rect.overY = e.clientY - offsetY;
+
+            // Put your mouseOut stuff here
+            isRecDown=false;
+        },
+
+        handleMouseMove:function(e){
+            
+            if(!isRecDown){return;}
+            // tell the browser we're handling this event
+            e.preventDefault();
+            e.stopPropagation();
+
+            rect.overX = e.clientX - offsetX;
+            rect.overY = e.clientY - offsetY;
+
+            newRect={
+
+                left:Math.min(rect.startX,rect.overX),
+                right:Math.max(rect.startX,rect.overX),
+                top:Math.min(rect.startY,rect.overY),
+                bottom:Math.max(rect.startY,rect.overY),
+                color:"red"
+
+            }
+
+            drawRectangleOnCanvas.drawAll();
             ctx.globalAlpha=1;
-	        ctx.strokeStyle = 'red';
-            ctx.lineWidth = '8';
-	        ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
-            //console.log(rect.startX,pageX-left,rect.startY,pageY-top)
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = '3';
+            ctx.strokeRect(rect.startX,rect.startY,rect.overX-rect.startX,rect.overY-rect.startY);
         }
     }
-    function touch_mask(event){
-        //var pageX = event.touches[0].clientX;
-        //var pageY = event.touches[0].clientY;
-        var pageX = event.changedTouches[0].clientX;
-        var pageY = event.changedTouches[0].clientY;
-	    ctx.clearRect(0, 0, 5000, 5000);
-	    console.log("check")
-	    //console.log(e.pageX)
-	    //console.log(e.pageY)
-        ctx.globalAlpha=0.5;
-        ctx.fillStyle="white";
-	    ctx.fillRect(rect.startX,rect.startY, pageX-rect.startX,pageY-rect.startY);
-    }	
-	function mouseDown(e) {
-        flag = 0;
-        var left = $("#myimg").offset().left;
-        var top = $("#myimg").offset().top;
-        console.log("fuck");
-	    rect.startX = e.pageX - left;
-	    rect.startY = e.pageY - top;
-	    drag = true;
+
+    move = drawRectangleOnCanvas.handleMouseMove;
+    down = drawRectangleOnCanvas.handleMouseDown;
+    up = drawRectangleOnCanvas.handleMouseUp;
+    out = drawRectangleOnCanvas.handleMouseOut;
+
+    function init() {
+
+        if (timeOver == false) {
+
+        	console.log(rects);
+            console.log("please draw");
+            
+            $("#undo").click(function(){
+                if (timeOver == false) {
+                    rects.pop();
+                    drawRectangleOnCanvas.drawAll();
+                    console.log(rects);
+                    console.log("Dead");
+                }  
+            });
+         
+            canvas.addEventListener("mousemove", move);
+            canvas.addEventListener("mousedown", down);
+            canvas.addEventListener("mouseup", up);
+            canvas.addEventListener("mouseout", out);
+        }
+
 	}
 
-	function add_card(e) {
-        console.log(e.filename)
-        console.log(e.caption)
-        $("#partial").prepend(			
-		     sprintf(`<div class="card mb-3" style="max-width:%s;">
-                                <div class="row no-gutters">
-                                    <div class="col-md-4">
-                                        <img src="%s" style="object-fit:scale-down; max-height:206px;" class="card-img" alt="...">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h1 class="card-text" id="cap_im">%s</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`,"100%",e.filename,e.caption));
-	    ctx.clearRect(0, 0, 5000, 5000);
-	}	
-	
-    function mask(e){
-	    ctx.clearRect(0, 0, 2000, 2000);
-	    console.log("check")
-	    //console.log(e.pageX)
-	    //console.log(e.pageY)
-        ctx.globalAlpha=0.5;
-        ctx.fillStyle="white";
-	    ctx.fillRect(rect.startX,rect.startY, e.pageX-rect.startX,e.pageY-rect.startY);
-    }
-	function mouseUp(e) { 
-            var left = $("#myimg").offset().left;
-            var top = $("#myimg").offset().top;
-	        rect.w = (e.pageX - left) - rect.startX;
-	        rect.h = (e.pageY - top) - rect.startY;
-            console.log(rect.w,rect.h)
-            var relativeX = (e.pageX - left);
-            var relativeY = (e.pageY - top);
-            var temp = $("#myimg")
-            var formdata = {"img_size":{"width":temp.css("width"),"height":temp.css("height")}
-                    ,"coordinates":{"x":relativeX,"y":relativeY},"img_name":temp.attr("src")
-                    ,"rectangles":{"x_left":rect.startX+"px","x_right":e.pageX-left+"px","y_top":rect.startY+"px","y_bottom":e.pageY-top+"px"}};
-                mask(e);
-                $.ajax({
-                    type:'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formdata),
-                    dataType: 'json',
-                    url: 'http://35.227.183.188:5000/boxpost',
-                    success: function (e) {
-                        console.log(e.coordinates)
-                        //console.log(e.caption);
-						if(e != 0){
-                            add_card(e);
-                		}else{
-                    		alert('file not uploaded');
-                		}
-                    },
-                    error: function(error) {
-                        console.log(error);
-                    },
-	            });
-                drag = false; 
-    }
-	function mouseMove(e) {
-	    if (drag) {
-            flag = 1;
-            var left = $("#myimg").offset().left;
-            var top = $("#myimg").offset().top;
-	        ctx.clearRect(0, 0, 2000, 2000);
-	        rect.w = (e.pageX - left) - rect.startX;
-	        rect.h = (e.pageY - top) - rect.startY;
-            ctx.globalAlpha=1;
-	        ctx.strokeStyle = 'red';
-            ctx.lineWidth = '8';
-	        ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
-            console.log(rect.startX,e.pageX-left,rect.startY,e.pageY-top)
-	    }
-    }
-	init();
+    init();
+    
 });
+
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            // timer = duration;
+            display.textContent = "Expired";
+            if (timeOver == false) {
+                timeOverfun();
+            }
+            timeOver = true;
+        }
+    }, 1000);
+}
+
+window.onload = function () {
+    var fiveMinutes = 60 * 1,
+        display = document.getElementById('time');
+    startTimer(fiveMinutes, display);
+};
+
+function timeOverfun(){
+
+    ctx.globalAlpha=0.5;
+    ctx.fillStyle="black";
+    ctx.fillRect(0,0,2000,2000);
+
+    canvas.removeEventListener("mousemove", move);
+    canvas.removeEventListener("mousedown", down);
+    canvas.removeEventListener("mouseup", up);
+    canvas.removeEventListener("mouseout", out);
+
+    console.log("remove all")
+
+}

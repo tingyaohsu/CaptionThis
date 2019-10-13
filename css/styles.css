@@ -1,6 +1,6 @@
 body, html {
   margin: 0;
-  overflow: hidden;
+  /*overflow: hidden;*/
   height:98%;
 }
 #cap{
@@ -74,5 +74,5 @@ div.clickEffect{
 }
 
 #myCanvas {
-    position:relative;
+    position:absolute;
 }

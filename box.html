@@ -11,49 +11,50 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="js/Boxing.js"></script>
 <script src="js/sprintf.js"></script>
+<script src="js/jcanvas.min.js"></script>
 <link rel="stylesheet" href="css/styles.css" type="text/css">
 <!--link rel="stylesheet" href="static/css/component.css" type="text/css">
 <link rel="stylesheet" href="static/css/normalize.css" type="text/css">
 <link rel="stylesheet" type="text/css" href="static/fonts/font-awesome-4.3.0/css/font-awesome.min.css" /-->
 </head>
     <body>
-        <a id="test" class="container">
-            <!-- Extra large modal -->
-            <!--button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">User Select</button>
-    		<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                    
-                        <div class="modal-header">
-    		                Customer
-                        </div>
-                        <div id="card_container" class="modal-body">
-                        </div>
-    		        </div>
-    		    </div>
-    		</div-->
-            <div id="content">
-			    <div class="row">
-			    	<div class="col-8" id="left">
-                    	<img id="myimg" class="img-fluid" style="width: 100%" src="{{contents['filename']}}" alt="photos">
-                        <canvas id='myCanvas'></canvas>
-                    </div>
-			    	<div class="col-4" id="partial">
-		                <div class="card mb-3" style="max-width:100%;">
-                            <div class="row no-gutters">
-                                <div class="col-md-4">
-                                    <img src="{{contents['filename']}}" class="card-img" alt="...">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h1 class="card-text" id="cap_im">{{contents['caption']}}</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                	</div>
-			    </div>
+        <div class="container">
+            <h1 id="title"> Draw Boxes On The Image</h1>
+            <div class="row">
+                <div class="col-10">
+                    <ul>
+                        <li>Draw rectangles (at most 15) using your mouse over each object that you think it is <strong>important</strong> of the image.</li>
+                        <li>You can click <strong>Undo</strong> button to remove previous rectangles.</li>
+                        <!-- <li>Please <span style="text-decoration: underline;">consider the difference carefully</span> and finish all the questions by clicking on the right answer box. </li>
+                        <li>Click <span id="first_box"></span> if you think the answer is <strong class="highlighted">Postpone</strong>. </li>
+                        <li>Click <span id="second_box"></span> if you think the answer is <strong class="highlighted">Delay</strong>. </li> -->
+                    </ul>
+                </div>
+                <div class="col-2"><h1 id="time">01:00</h1></div>
             </div>
-        </a>
+	    	<div id="Canvas_space">
+                <!-- <button>Undo</button> -->
+                <div>
+            	   <img id="myimg" style="width: 1110px; height:833px;" src="images/000000001084.jpg" alt="photos">
+                    <canvas id='myCanvas' style="border: 1px blue solid;"></canvas>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-block btn-outline-info" id="undo">Undo</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-block btn-outline-info" id="reset">Reset</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <h2><br>You need to wait 5 seconds before you can submit<br><br></h2>
+                    <!-- <div>Registration closes in <span id="time">01:00</span> minutes!</div> -->
+                    <!-- <div id="submit_panel">       -->
+                    <button type="button" style="display: none;" class="btn btn-block btn-outline-info" id="submit_btn">Submit</button>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
     </body>
 </html>
