@@ -35,7 +35,22 @@ $(function() {
 
     setInterval(reOffset, 0.01);
     // Submit Button
-    $('#submit_btn').delay(5000).show(0);
+    setTimeout(function() {
+        $("#submit_btn").show().click(function(){
+            if (rects.length < 3) {
+                var check = confirm("Are You Sure?");
+                if (check == true) {
+                    console.log(rects)
+                    location.reload();
+                }
+            }
+            else{
+                console.log(rects)
+                location.reload();
+            }
+        }); 
+    }, 6000);
+    // $('#submit_btn').delay(5000).show(0)
     $("#reset").click(function(){
         location.reload();
         timeOver = false;
