@@ -14,36 +14,38 @@
 </head>
     <body>
         <div class="container">
-            <h1 id="title"> Draw Boxes On The Image</h1>
+            <h1 id="title"> Draw Your Interest Of The Image</h1>
             <div class="row">
-                <div class="col-10">
+                <div class="col-9">
                     <ul>
-                        <li>Draw rectangles (at most 15) using your mouse over each object that you think it is <strong>important</strong> of the image.</li>
-                        <li>You can click <strong>Undo</strong> button to remove previous rectangles.</li>
+                        <li>Draw rectangles (at most 15) using your mouse over the area that you think it is the <strong>interested part</strong> of the image for you.</li>
+                        <li>You can click <strong>Undo</strong> button to remove previous selected area.</li>
                         <!-- <li>Please <span style="text-decoration: underline;">consider the difference carefully</span> and finish all the questions by clicking on the right answer box. </li>
                         <li>Click <span id="first_box"></span> if you think the answer is <strong class="highlighted">Postpone</strong>. </li>
                         <li>Click <span id="second_box"></span> if you think the answer is <strong class="highlighted">Delay</strong>. </li> -->
                     </ul>
                 </div>
-                <div class="col-2"><h1 id="time">01:00</h1></div>
+                <div class="col-3"><h2 id="time">01:00</h2></div>
             </div>
 	    	<div id="Canvas_space">
-                <!-- <button>Undo</button> -->
+                <div class="row">
+                    <div class="col">
+                        <button type="button" class="btn btn-block btn-outline-info" id="undo">Undo</button>
+                    </div>
+                </div>
+                <br>
                 <div>
             	   <img id="myimg" style="width: 1110px; height:833px;" src="images/000000001084.jpg" alt="photos">
                     <canvas id='myCanvas' style="border: 1px blue solid;"></canvas>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-6">
-                        <button type="button" class="btn btn-block btn-outline-info" id="undo">Undo</button>
-                    </div>
-                    <div class="col-6">
+                    <div class="col">
                         <button type="button" class="btn btn-block btn-outline-info" id="reset">Reset</button>
                     </div>
                 </div>
                 <div class="row">
-                    <h2><br>You need to wait 5 seconds before you can submit<br><br></h2>
+                    <h2><br>You need to wait 5 seconds before you can submit !!!<br><br></h2>
                     <button type="button" style="display: none;" class="btn btn-block btn-outline-info" id="submit_btn">Submit</button>
                     <!-- </div> -->
                 </div>

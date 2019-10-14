@@ -38,7 +38,7 @@ $(function() {
     setTimeout(function() {
         $("#submit_btn").show().click(function(){
             if (rects.length < 3) {
-                var check = confirm("Are You Sure?");
+                var check = confirm("Do you still want to submit since you select less than two area?");
                 if (check == true) {
                     console.log(rects)
                     location.reload();
@@ -52,8 +52,11 @@ $(function() {
     }, 6000);
     // $('#submit_btn').delay(5000).show(0)
     $("#reset").click(function(){
-        location.reload();
-        timeOver = false;
+        var check = confirm("Do you really want to reset ?");
+        if (check == true) {
+            location.reload();
+            timeOver = false;
+        }  
     });  
 
     console.log(timeOver);
@@ -95,7 +98,9 @@ $(function() {
 
             // Put your mouseup stuff here
             isRecDown=false;
-            rects.push(newRect);
+            if (rect.w > 50 && rect.h > 50){
+                rects.push(newRect);
+            }
             drawRectangleOnCanvas.drawAll();
         },
 
@@ -203,11 +208,12 @@ function startTimer(duration, display) {
 
         if (--timer < 0) {
             // timer = duration;
-            display.textContent = "Expired";
+            display.textContent = "Times up ! Please Submit !";
             if (timeOver == false) {
                 timeOverfun();
             }
             timeOver = true;
+            $("#undo").hide();
         }
     }, 1000);
 }
@@ -221,7 +227,7 @@ window.onload = function () {
 function timeOverfun(){
 
     ctx.globalAlpha=0.5;
-    ctx.fillStyle="black";
+    ctx.fillStyle="yellow";
     ctx.fillRect(0,0,2000,2000);
 
     canvas.removeEventListener("mousemove", move);
